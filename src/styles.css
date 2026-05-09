@@ -1,0 +1,141 @@
+@import "video.js/dist/video-js.css";
+@import "tailwindcss";
+
+@theme {
+  --animate-dance: dance 0.8s ease-in-out infinite alternate;
+  
+  @keyframes dance {
+    0% { height: 15%; }
+    25% { height: 60%; }
+    50% { height: 100%; }
+    75% { height: 40%; }
+    100% { height: 80%; }
+  }
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-bg-main: var(--theme-bg-main);
+  --color-bg-panel: var(--theme-bg-panel);
+  --color-bg-deep: var(--theme-bg-deep);
+  --color-line: var(--theme-line);
+  --color-accent: var(--theme-accent);
+  --color-ink: var(--theme-ink);
+}
+
+/* Default Theme (Midnight / Dark) */
+:root {
+  --theme-bg-main: #0f172a;
+  --theme-bg-panel: #1e293b;
+  --theme-bg-deep: #020617;
+  --theme-line: #334155;
+  --theme-accent: #f59e0b;
+  --theme-ink: #f1f5f9;
+}
+
+/* Dawn Theme */
+.theme-dawn {
+  --theme-bg-main: #f8fafc;
+  --theme-bg-panel: #ffffff;
+  --theme-bg-deep: #e2e8f0;
+  --theme-line: #cbd5e1;
+  --theme-accent: #3b82f6;
+  --theme-ink: #0f172a;
+}
+
+/* Eco Theme (Peaceful/Green) */
+.theme-eco {
+  --theme-bg-main: #f0fdf4;
+  --theme-bg-panel: #ffffff;
+  --theme-bg-deep: #dcfce7;
+  --theme-line: #bbf7d0;
+  --theme-accent: #16a34a;
+  --theme-ink: #14532d;
+}
+
+/* Sunset Theme (Warm/Inspiring) */
+.theme-sunset {
+  --theme-bg-main: #fffbeb;
+  --theme-bg-panel: #ffffff;
+  --theme-bg-deep: #fef3c7;
+  --theme-line: #fde68a;
+  --theme-accent: #d97706;
+  --theme-ink: #451a03;
+}
+
+/* Cyber Theme (Neon/Dark) */
+.theme-cyber {
+  --theme-bg-main: #09090b;
+  --theme-bg-panel: #18181b;
+  --theme-bg-deep: #000000;
+  --theme-line: #3f3f46;
+  --theme-accent: #22d3ee;
+  --theme-ink: #f4f4f5;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--theme-bg-main);
+  color: var(--theme-ink);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--theme-line);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-ink);
+}
+
+/* Video.js Theme Customization */
+.video-js {
+  background-color: var(--theme-bg-deep) !important;
+  font-family: var(--font-sans) !important;
+}
+.vjs-big-play-button {
+  background-color: var(--theme-accent) !important;
+  color: var(--theme-bg-deep) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 64px !important;
+  height: 64px !important;
+  line-height: 64px !important;
+  margin-top: -32px !important;
+  margin-left: -32px !important;
+}
+.vjs-control-bar {
+  background-color: var(--theme-bg-panel) !important;
+}
+.vjs-play-progress {
+  background-color: var(--theme-accent) !important;
+}
+
+/* UI Layout Classes */
+.btn-primary {
+  @apply bg-accent text-bg-deep font-bold px-4 py-2 rounded-md hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-accent/20;
+}
+
+.btn-ghost {
+  @apply bg-transparent text-ink border border-line px-4 py-2 rounded-md hover:bg-bg-panel transition-all flex items-center gap-2;
+}
+
+.timeline-block {
+  @apply absolute h-12 bg-bg-panel border border-line rounded-md cursor-move hover:border-accent transition-colors flex items-center justify-center p-2 text-[10px] text-ink overflow-hidden text-ellipsis whitespace-nowrap shadow-md;
+}
+.timeline-block.active {
+  @apply bg-accent text-bg-deep border-accent font-bold shadow-lg shadow-accent/30;
+}

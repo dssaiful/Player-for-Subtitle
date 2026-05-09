@@ -1,0 +1,12 @@
+{
+  "name": "SubMaster Pro",
+  "description": "Professional offline-first subtitle editor and media playback suite with AI-powered transcription and translation.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "AI-powered transcription",
+    "Multi-track subtitle editing"
+  ]
+}

@@ -1,0 +1,60 @@
+Copy and paste the text between the dashed lines below into the AI Coding agent or Antigravity to automatically set up and build a perfectly working .exe. 
+
+This prompt addresses the most critical part: configuring Electron's internal server headers so that the FFmpeg WebAssembly (SharedArrayBuffer) doesn't crash in desktop mode.
+
+--------------------------------------------------------------------------------
+
+Please convert this application into a Windows executable (.exe) using Electron. You must handle the complete setup. 
+
+Perform the following steps sequentially:
+
+1. Install Dependencies
+Run `npm install electron electron-builder --save-dev`.
+
+2. Create main.js
+Create a `main.js` file at the project root. Configure a BrowserWindow to load `dist/browser/index.html`. 
+CRITICAL WEBASSEMBLY FIX: Because this app uses FFmpeg.wasm, you MUST strictly modify the session headers in `main.js` to enable SharedArrayBuffer. Add this block before `mainWindow.loadURL`:
+```javascript
+const { app, BrowserWindow, session } = require('electron');
+const path = require('path');
+const url = require('url');
+
+app.on('ready', () => {
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          'Cross-Origin-Opener-Policy': ['same-origin'],
+          'Cross-Origin-Embedder-Policy': ['require-corp']
+        }
+      });
+    });
+
+    const mainWindow = new BrowserWindow({
+      width: 1280, height: 800,
+      webPreferences: { nodeIntegration: true, contextIsolation: false }
+    });
+
+    mainWindow.loadURL(url.format({
+      pathname: path.join(__dirname, 'dist/browser/index.html'),
+      protocol: 'file:',
+      slashes: true
+    }));
+});
+```
+
+3. Fix the Base Href
+Edit `src/index.html` and change `<base href="/">` to `<base href="./">`.
+
+4. Update package.json
+Modify `package.json` to include the following:
+- Add `"main": "main.js"` at the root level.
+- Add the electron-builder config at the root level:
+  `"build": { "appId": "com.submaster.app", "win": { "target": "nsis" }, "directories": { "output": "release/" }, "files": ["dist/browser/**/*", "main.js", "package.json"] }`
+- Add to the scripts section:
+  `"electron:build": "npm run build && electron-builder --win"`
+
+5. Build the Exe
+Run `npm run electron:build` to compile everything and produce the final .exe inside the `release/` folder. Let me know when it's done!
+
+--------------------------------------------------------------------------------

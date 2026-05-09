@@ -1,0 +1,29 @@
+To create a complex, professional-grade application like SubMaster Pro, copy and paste the following prompt into a new chat with me (the AI agent).
+
+--- COPY BELOW ---
+
+I want to build a highly complex, professional-grade web application. Please act as a Senior Frontend Architect and Product Designer.
+
+# Project Overview
+[Insert Your App Idea Here - e.g., "A real-time audio editing suite", or "A digital video synthesizer"]
+
+# Design & UX Guidelines
+1. **Visual Language:** Use a modern, dark-mode-first aesthetic. Use colors, gradients, and shadows artistically. Do not use generic, default layouts. Elements should look polished, tactile, and highly interactive.
+2. **Icons:** Rely heavily on `lucide-angular` (or standard SVG icons) for all buttons and interactive elements.
+3. **Animations:** Use CSS transitions (`transition-all duration-300`) heavily to make the UI feel alive when hovering, clicking, or navigating.
+4. **Layout:** The layout must be highly modular, utilizing sidebars, drawers, complex toolbars, and a central workspace. Think "Professional Desktop Software" like Premiere Pro or VS Code, translated to the browser.
+5. **Responsiveness:** Ensure complex panels collapse gracefully smoothly on smaller screens. 
+
+# Technical Requirements
+1. **Framework:** Use Angular 18+ with Standalone Components. Put all logic into injectable Signals-based services. Do NOT use standard Routing if it's meant to be a monolithic single-screen app with panels.
+2. **State Management:** Use Angular Signals for all reactivity. Features should have independent services (e.g. `ThemeService`, `HistoryService`).
+3. **Local Deployment:** The app must be fully operable offline. Do not let third-party modules crash the boot sequence. Polyfill `window.process` in `index.html` if necessary, and use `<base href="./">`.
+4. **Mocked Features:** If a feature requires heavy processing (like video decoding or backend AI), implement a frontend UI that *simulates* the process beautifully (with progress bars and realistic dummy output) and comment where the real logic would go, so I can use the UI immediately.
+
+# Implementation Steps
+1. First, setup the core folder structure and necessary UI libraries (Install Tailwind and Lucide).
+2. Create the core logic Services (State, UI Toggles, Theme).
+3. Build the individual UI components (Sidebar, Toolbar, Master Workspace).
+4. Combine them into `app.ts` and ensure it runs perfectly in the preview window.
+
+Please begin by outlining the structure you are going to use, and then proceed with creating and wiring the components!

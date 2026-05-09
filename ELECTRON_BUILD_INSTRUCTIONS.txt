@@ -1,0 +1,115 @@
+How to build an .exe (Windows executable) using Electron
+=========================================================
+
+This guide explains how to package this Angular application into a standalone Windows executable (.exe) using Electron.
+
+Step 1: Install Required Dependencies
+-----------------------------------
+First, install Electron and electron-builder as development dependencies in the project root:
+
+    npm install electron electron-builder wait-on concurrently --save-dev
+
+Step 2: Create the Electron Entry File (main.js)
+----------------------------------------------
+Create a file named `main.js` in the root of your project with the following content:
+
+    const { app, BrowserWindow } = require('electron');
+    const path = require('path');
+    const url = require('url');
+
+    let mainWindow;
+
+    function createWindow () {
+      mainWindow = new BrowserWindow({
+        width: 1280,
+        height: 800,
+        webPreferences: {
+          nodeIntegration: true,
+          contextIsolation: false
+        }
+      });
+
+      // Load the built Angular app
+      mainWindow.loadURL(
+        url.format({
+          pathname: path.join(__dirname, 'dist/browser/index.html'),
+          protocol: 'file:',
+          slashes: true
+        })
+      );
+
+      mainWindow.on('closed', function () {
+        mainWindow = null;
+      });
+    }
+
+    app.on('ready', createWindow);
+
+    app.on('window-all-closed', function () {
+      if (process.platform !== 'darwin') app.quit();
+    });
+
+    app.on('activate', function () {
+      if (mainWindow === null) createWindow();
+    });
+
+
+Step 3: Update package.json
+---------------------------
+Modify your `package.json` to include the Electron configuration and build scripts.
+
+Add the `main` reference:
+    "main": "main.js",
+
+Add the `build` configuration object for electron-builder (at the root level of package.json):
+    "build": {
+      "appId": "com.submaster.app",
+      "productName": "Submaster Pro",
+      "directories": {
+        "output": "release/"
+      },
+      "win": {
+        "target": "nsis",
+        "icon": "public/favicon.ico"
+      },
+      "files": [
+        "dist/browser/**/*",
+        "main.js",
+        "package.json"
+      ]
+    }
+
+Add the following scripts to your `scripts` section:
+    "electron:start": "electron .",
+    "electron:build": "npm run build && electron-builder --win"
+
+
+Step 4: Fix Base Href for Native File System
+--------------------------------------------
+By default, Angular uses `<base href="/">`. For Electron (which loads from the local filesystem via `file://`), you need to change this to `<base href="./">`. 
+
+Edit `src/index.html`:
+Change `<base href="/">` to `<base href="./">`
+
+
+Step 5: Test the Electron App locally
+-------------------------------------
+Before building the .exe, compile your Angular app and test it with Electron:
+
+    npm run build
+    npm run electron:start
+
+You should see an application window pop up with the Submaster Pro app running!
+
+
+Step 6: Build the .exe Installer
+--------------------------------
+Run the final build command:
+
+    npm run electron:build
+
+Once the process finishes, look inside the newly created `release` folder in your project root. You will find `Submaster Pro Setup [version].exe`. You can double-click this file to install and run the application as a native desktop program.
+
+    
+Note on Node Native Modules / WebAssembly:
+If your application relies heavily on WebAssembly (like FFmpeg.wasm), you might need to enable specific headers inside `main.js` via session protocols or stick to the local HTTP server approach inside Electron. However, the above setup will bundle standard web-based frontend applications gracefully.
